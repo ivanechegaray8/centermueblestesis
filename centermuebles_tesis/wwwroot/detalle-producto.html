@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - Centermuebles</title>
+
+    <!-- CONEXIÓN CON CSS -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        .producto-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .producto-nav {
+            background: #34495e;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .producto-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .btn-volver {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+            .btn-volver:hover {
+                background: #c0392b;
+            }
+
+        .producto-detalle-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .producto-detalle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .producto-imagen {
+            text-align: center;
+        }
+
+            .producto-imagen img {
+                max-width: 100%;
+                height: 400px;
+                object-fit: contain;
+                border-radius: 8px;
+                border: 1px solid #eee;
+            }
+
+        .producto-info h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+       
+
+        .producto-precio {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .producto-descripcion {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .producto-detalles {
+            margin-bottom: 25px;
+        }
+
+        .producto-stock {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .producto-categoria {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .btn-agregar-carrito-detalle {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .btn-agregar-carrito-detalle:hover {
+                background: #219653;
+            }
+
+        .producto-no-encontrado {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+            .producto-no-encontrado h2 {
+                color: #2c3e50;
+                margin-bottom: 15px;
+            }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del detalle del producto -->
+    <header class="producto-header">
+        <div class="producto-header-content">
+            <h1>📋 Detalle del Producto</h1>
+            <p>Información completa del producto seleccionado</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="producto-nav">
+        <div class="producto-nav-content">
+            <div class="producto-title">Detalles del producto</div>
+            <a href="index.html" class="btn-volver">← Volver a la Tienda</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="producto-main">
+        <div class="producto-detalle-container">
+            <div id="contenedor-producto" class="loading">
+                Cargando información del producto...
+            </div>
+        </div>
+    </main>
+
+    <!-- CONEXIÓN CON JAVASCRIPT -->
+    <script src="js/script.js"></script>
+
+    <script>
+        // Variable global para almacenar el producto actual
+        let productoActual = null;
+
+        // Función para obtener parámetros de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        // Función para cargar los detalles del producto
+        async function cargarDetalleProducto() {
+            const productoId = obtenerParametroURL('id');
+            const contenedor = document.getElementById('contenedor-producto');
+
+            if (!productoId) {
+                contenedor.innerHTML = `
+                        <div class="producto-no-encontrado">
+                            <h2>Producto no encontrado</h2>
+                            <p>No se ha especificado un producto válido.</p>
+                            <a href="index.html" class="btn-primary">Volver a la tienda</a>
+                        </div>
+                    `;
+                return;
+            }
+
+            try {
+                console.log('🔄 Cargando detalle del producto ID:', productoId);
+                const response = await fetch(`http://localhost:5269/api/productos/${productoId}`);
+
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status} al cargar el producto`);
+                }
+
+                productoActual = await response.json();
+                console.log('✅ Producto cargado:', productoActual);
+
+                // Mostrar el producto
+                contenedor.innerHTML = `
+                        <div class="producto-detalle">
+                            <div class="producto-imagen">
+                                ${productoActual.rutaImagen ?
+                        `<img src="${productoActual.rutaImagen}" alt="${productoActual.nombre}" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\\'display:flex;align-items:center;justify-content:center;height:400px;color:#666;font-size:3rem;\\'>📷</div>';">` :
+                        '<div style="display:flex;align-items:center;justify-content:center;height:400px;color:#666;font-size:3rem;">📷 Sin imagen</div>'
+                    }
+                            </div>
+                            <div class="producto-info">
+                                <h1>${productoActual.nombre}</h1>
+                                <div class="producto-precio">$${productoActual.precio}</div>
+                                <div class="producto-stock">Stock disponible: ${productoActual.stock}</div>
+                                <div class="producto-descripcion">
+                                    ${productoActual.descripcion || 'Este producto no tiene descripción disponible.'}
+                                </div>
+                                <button class="btn-agregar-carrito-detalle" id="btn-agregar-carrito">
+                                    🛒 Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                // Agregar event listener al botón después de crear el HTML
+                document.getElementById('btn-agregar-carrito').addEventListener('click', agregarAlCarritoDesdeDetalle);
+
+            } catch (error) {
+                console.error('❌ Error al cargar detalle del producto:', error);
+                contenedor.innerHTML = `
+                        <div class="producto-no-encontrado">
+                            <h2>Error al cargar el producto</h2>
+                            <p>${error.message}</p>
+                            <a href="index.html" class="btn-primary">Volver a la tienda</a>
+                        </div>
+                    `;
+            }
+        }
+
+        // Función para agregar al carrito desde la página de detalle
+        function agregarAlCarritoDesdeDetalle() {
+            try {
+                if (!productoActual) {
+                    throw new Error('No hay producto cargado');
+                }
+
+                agregarAlCarrito(productoActual);
+
+                // Mostrar confirmación
+                const boton = document.getElementById('btn-agregar-carrito');
+                const textoOriginal = boton.innerHTML;
+                boton.innerHTML = '✅ ¡Agregado!';
+                boton.style.background = '#27ae60';
+                boton.disabled = true;
+
+                setTimeout(() => {
+                    boton.innerHTML = textoOriginal;
+                    boton.style.background = '';
+                    boton.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error al agregar producto al carrito:', error);
+                alert('Error al agregar el producto al carrito: ' + error.message);
+            }
+        }
+
+        // Cargar el detalle del producto cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', cargarDetalleProducto);
+    </script>
+</body>
+</html>
