@@ -1,0 +1,656 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto - Centermuebles</title>
+
+    <!-- CONEXIÓN CON CSS -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        /* Header del producto */
+        .producto-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .producto-header-content h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5rem;
+        }
+
+        .producto-header-content p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Navegación */
+        .producto-nav {
+            background: #34495e;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .producto-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .producto-title {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .btn-volver {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+            .btn-volver:hover {
+                background: #c0392b;
+            }
+
+        /* Contenido principal */
+        .producto-main {
+            max-width: 1200px;
+            margin: 0 auto 30px auto;
+            padding: 0 20px;
+        }
+
+        .producto-detalle-container {
+            width: 100%;
+        }
+
+        /* Contenedor principal FLEX para imagen (izquierda) y info (derecha) */
+        .producto-detalle {
+            display: flex;
+            gap: 40px;
+            align-items: flex-start;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        /* Sección izquierda - Galería de imágenes */
+        .producto-galeria {
+            flex: 0 0 50%;
+        }
+
+        .producto-imagen {
+            text-align: center;
+            position: relative;
+        }
+
+        .imagen-principal {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+            .imagen-principal img {
+                max-width: 100%;
+                height: 400px;
+                object-fit: contain;
+                border-radius: 8px;
+                border: 1px solid #eee;
+                transition: opacity 0.3s ease;
+            }
+
+        /* Flechas de navegación */
+        .flecha-navegacion {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+            .flecha-navegacion:hover {
+                background: rgba(0, 0, 0, 0.9);
+                transform: translateY(-50%) scale(1.1);
+            }
+
+        .flecha-izquierda {
+            left: 15px;
+        }
+
+        .flecha-derecha {
+            right: 15px;
+        }
+
+        .flecha-oculta {
+            display: none !important;
+        }
+
+        /* Sección derecha - Información del producto */
+        .producto-info {
+            flex: 1;
+        }
+
+        /* Miniaturas */
+        .galeria-miniaturas {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .miniatura {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+            .miniatura:hover {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+            .miniatura.activa {
+                border-color: #3498db;
+                opacity: 1;
+                transform: scale(1.05);
+            }
+
+        .contador-imagenes {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+
+        .producto-info h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .producto-precio {
+            font-size: 2.5rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .producto-descripcion {
+            color: #000; /* Negro como pediste */
+            line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        .producto-detalles {
+            margin-bottom: 25px;
+        }
+
+        .producto-stock {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .producto-categoria {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .btn-agregar-carrito-detalle {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+            .btn-agregar-carrito-detalle:hover {
+                background: #219653;
+            }
+
+        .producto-no-encontrado {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+            .producto-no-encontrado h2 {
+                color: #2c3e50;
+                margin-bottom: 15px;
+            }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .producto-detalle {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .producto-galeria {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del detalle del producto -->
+    <header class="producto-header">
+        <div class="producto-header-content">
+            <h1>📋 Detalle del Producto</h1>
+            <p>Información completa del producto seleccionado</p>
+        </div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="producto-nav">
+        <div class="producto-nav-content">
+            <div class="producto-title">Detalles del producto</div>
+            <a href="index.html" class="btn-volver">← Volver a la Tienda</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="producto-main">
+        <div class="producto-detalle-container">
+            <div id="contenedor-producto" class="loading">
+                Cargando información del producto...
+            </div>
+        </div>
+    </main>
+
+    <!-- CONEXIÓN CON JAVASCRIPT -->
+    <script src="JS/config.js"></script>
+    <script src="JS/utils.js"></script>
+    <script src="JS/auth.js"></script>
+    <script src="JS/validation.js"></script>
+    <script src="JS/modal.js"></script>
+    <script src="JS/login.js"></script>
+    <script src="JS/products.js"></script>
+    <script src="JS/cart.js"></script>
+    <script src="JS/checkout.js"></script>
+    <script src="JS/search.js"></script>
+    <script src="JS/main.js"></script>
+
+    <script>
+        // Variables globales
+        let productoActual = null;
+        let imagenActualIndex = 0;
+
+        // Función mejorada para formatear precios (puntos para miles, coma para decimales)
+        function formatearPrecio(precio) {
+            // Convertir a número si es necesario
+            let numero = precio;
+            if (typeof precio !== 'number') {
+                numero = parseFloat(precio);
+            }
+
+            // Validar que sea un número válido
+            if (isNaN(numero)) {
+                console.warn('Precio no válido:', precio);
+                return '$0,00';
+            }
+
+            // Redondear a 2 decimales para evitar problemas de precisión
+            numero = Math.round(numero * 100) / 100;
+
+            // Separar parte entera y decimal
+            const partes = numero.toFixed(2).split('.');
+            let parteEntera = partes[0];
+            const parteDecimal = partes[1];
+
+            // Formatear parte entera con puntos para miles
+            // Usamos una expresión regular para insertar puntos cada 3 dígitos
+            parteEntera = parteEntera.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+            // Retornar el precio formateado
+            return `$${parteEntera},${parteDecimal}`;
+        }
+
+        // Función para obtener parámetros de la URL
+        function obtenerParametroURL(nombre) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(nombre);
+        }
+
+        // Función para obtener la URL de imagen del producto
+        function obtenerImagenProducto(producto) {
+            // Si no hay ruta de imagen, retorna null
+            if (!producto.rutaImagen) {
+                return null;
+            }
+
+            // Si la ruta ya es una URL completa, úsala directamente
+            if (producto.rutaImagen.startsWith('http')) {
+                return producto.rutaImagen;
+            }
+
+            // Si es una ruta relativa, conviértela en URL completa
+            let rutaImagen = producto.rutaImagen;
+            if (!rutaImagen.startsWith('/')) {
+                rutaImagen = '/' + rutaImagen;
+            }
+
+            return `http://localhost:5269${rutaImagen}`;
+        }
+
+        // Función para obtener todas las imágenes del producto
+        function obtenerTodasLasImagenes(producto) {
+            const imagenes = [];
+
+            // Agregar imagen principal si existe
+            const imagenPrincipal = obtenerImagenProducto(producto);
+            if (imagenPrincipal) {
+                imagenes.push({
+                    rutaImagen: imagenPrincipal,
+                    esPrincipal: true
+                });
+            }
+
+            // Agregar imágenes del array Imagenes si existen
+            if (producto.Imagenes && Array.isArray(producto.Imagenes)) {
+                producto.Imagenes.forEach(imagen => {
+                    if (imagen.rutaImagen) {
+                        let ruta = imagen.rutaImagen;
+                        if (!ruta.startsWith('http') && !ruta.startsWith('/')) {
+                            ruta = '/' + ruta;
+                        }
+                        if (!ruta.startsWith('http')) {
+                            ruta = `http://localhost:5269${ruta}`;
+                        }
+                        imagenes.push({
+                            rutaImagen: ruta,
+                            esPrincipal: false
+                        });
+                    }
+                });
+            }
+
+            // Agregar imágenes del array imagenes si existen
+            if (producto.imagenes && Array.isArray(producto.imagenes)) {
+                producto.imagenes.forEach(imagen => {
+                    if (imagen.rutaImagen) {
+                        let ruta = imagen.rutaImagen;
+                        if (!ruta.startsWith('http') && !ruta.startsWith('/')) {
+                            ruta = '/' + ruta;
+                        }
+                        if (!ruta.startsWith('http')) {
+                            ruta = `http://localhost:5269${ruta}`;
+                        }
+                        imagenes.push({
+                            rutaImagen: ruta,
+                            esPrincipal: false
+                        });
+                    }
+                });
+            }
+
+            console.log('🖼️ Imágenes encontradas:', imagenes);
+            return imagenes;
+        }
+
+        // Función para cambiar imagen
+        function cambiarImagen(direccion) {
+            if (!productoActual || !productoActual.tieneMultiplesImagenes) return;
+
+            const totalImagenes = productoActual.imagenes.length;
+
+            if (direccion === 'siguiente') {
+                imagenActualIndex = (imagenActualIndex + 1) % totalImagenes;
+            } else {
+                imagenActualIndex = (imagenActualIndex - 1 + totalImagenes) % totalImagenes;
+            }
+
+            actualizarVistaImagen();
+        }
+
+        // Función para ir a imagen específica
+        function irAImagen(index) {
+            if (!productoActual || index < 0 || index >= productoActual.imagenes.length) return;
+
+            imagenActualIndex = index;
+            actualizarVistaImagen();
+        }
+
+        // Función para actualizar la vista de imagen
+        function actualizarVistaImagen() {
+            const imagenPrincipal = document.getElementById('imagen-principal');
+            const contador = document.getElementById('contador-imagenes');
+            const flechaIzquierda = document.getElementById('flecha-izquierda');
+            const flechaDerecha = document.getElementById('flecha-derecha');
+            const miniaturas = document.querySelectorAll('.miniatura');
+
+            if (imagenPrincipal && productoActual && productoActual.imagenes.length > 0) {
+                const imagenActual = productoActual.imagenes[imagenActualIndex];
+                imagenPrincipal.src = imagenActual.rutaImagen;
+                imagenPrincipal.alt = productoActual.nombre;
+
+                // Manejar error de carga de imagen
+                imagenPrincipal.onerror = function () {
+                    this.style.display = 'none';
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = 'display:flex;align-items:center;justify-content:center;height:400px;color:#666;font-size:3rem;';
+                    errorDiv.textContent = '📷 Error';
+                    this.parentNode.appendChild(errorDiv);
+                };
+            }
+
+            if (contador) {
+                contador.textContent = `${imagenActualIndex + 1} / ${productoActual.imagenes.length}`;
+            }
+
+            // Actualizar estado de flechas
+            if (flechaIzquierda && flechaDerecha) {
+                flechaIzquierda.classList.toggle('flecha-oculta', !productoActual.tieneMultiplesImagenes);
+                flechaDerecha.classList.toggle('flecha-oculta', !productoActual.tieneMultiplesImagenes);
+            }
+
+            // Actualizar miniaturas activas
+            miniaturas.forEach((miniatura, index) => {
+                miniatura.classList.toggle('activa', index === imagenActualIndex);
+            });
+        }
+
+        // Función para generar HTML de galería
+        function generarHTMLGaleria() {
+            if (!productoActual || !productoActual.imagenes || productoActual.imagenes.length === 0) {
+                return '<div style="display:flex;align-items:center;justify-content:center;height:400px;color:#666;font-size:3rem;">📷 Sin imagen</div>';
+            }
+
+            const tieneMultiples = productoActual.tieneMultiplesImagenes;
+            const imagenPrincipal = productoActual.imagenes[imagenActualIndex];
+
+            return `
+        <div class="imagen-principal">
+            <img id="imagen-principal"
+                 src="${imagenPrincipal.rutaImagen}"
+                 alt="${productoActual.nombre}"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="no-image" style="display:none;align-items:center;justify-content:center;height:400px;color:#666;font-size:3rem;">📷 Error</div>
+
+            ${tieneMultiples ? `
+                <button class="flecha-navegacion flecha-izquierda" id="flecha-izquierda" onclick="cambiarImagen('anterior')">
+                    ‹
+                </button>
+                <button class="flecha-navegacion flecha-derecha" id="flecha-derecha" onclick="cambiarImagen('siguiente')">
+                    ›
+                </button>
+                <div class="contador-imagenes" id="contador-imagenes">
+                    ${imagenActualIndex + 1} / ${productoActual.imagenes.length}
+                </div>
+            ` : ''}
+        </div>
+    `;
+        }
+
+        // Función para cargar los detalles del producto
+        async function cargarDetalleProducto() {
+            const productoId = obtenerParametroURL('id');
+            const contenedor = document.getElementById('contenedor-producto');
+
+            if (!productoId) {
+                contenedor.innerHTML = `
+                            <div class="producto-no-encontrado">
+                                <h2>Producto no encontrado</h2>
+                                <p>No se ha especificado un producto válido.</p>
+                                <a href="index.html" class="btn-volver">Volver a la tienda</a>
+                            </div>
+                        `;
+                return;
+            }
+
+            try {
+                console.log('🔄 Cargando detalle del producto ID:', productoId);
+                const response = await fetch(`http://localhost:5269/api/productos/${productoId}`);
+
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status} al cargar el producto`);
+                }
+
+                productoActual = await response.json();
+                console.log('✅ Producto cargado:', productoActual);
+
+                // Obtener todas las imágenes del producto
+                const todasLasImagenes = obtenerTodasLasImagenes(productoActual);
+                productoActual.imagenes = todasLasImagenes;
+                productoActual.tieneMultiplesImagenes = todasLasImagenes.length > 1;
+
+                // Reiniciar índice de imagen
+                imagenActualIndex = 0;
+
+                // Formatear el precio
+                const precioFormateado = formatearPrecio(productoActual.precio);
+
+                // Mostrar el producto con estructura FLEX
+                contenedor.innerHTML = `
+        <div class="producto-detalle">
+            <!-- Sección izquierda - Galería -->
+            <div class="producto-galeria">
+                <div class="producto-imagen">
+                    ${generarHTMLGaleria()}
+                </div>
+            </div>
+
+            <!-- Sección derecha - Información del producto -->
+            <div class="producto-info">
+                <h1>${productoActual.nombre}</h1>
+                <div class="producto-precio">${precioFormateado}</div>
+                <div class="producto-stock">Stock disponible: ${productoActual.stock}</div>
+                <div class="producto-descripcion">
+                    ${productoActual.descripcion || 'Este producto no tiene descripción disponible.'}
+                </div>
+                <button class="btn-agregar-carrito-detalle" id="btn-agregar-carrito">
+                    🛒 Agregar al Carrito
+                </button>
+            </div>
+        </div>
+`;
+
+                // Agregar event listener al botón después de crear el HTML
+                document.getElementById('btn-agregar-carrito').addEventListener('click', agregarAlCarritoDesdeDetalle);
+
+            } catch (error) {
+                console.error('❌ Error al cargar detalle del producto:', error);
+                contenedor.innerHTML = `
+                            <div class="producto-no-encontrado">
+                                <h2>Error al cargar el producto</h2>
+                                <p>${error.message}</p>
+                                <a href="index.html" class="btn-volver">Volver a la tienda</a>
+                            </div>
+                        `;
+            }
+        }
+
+        // Función para agregar al carrito desde la página de detalle
+        function agregarAlCarritoDesdeDetalle() {
+            try {
+                if (!productoActual) {
+                    throw new Error('No hay producto cargado');
+                }
+
+                agregarAlCarrito(productoActual);
+
+                // Mostrar confirmación
+                const boton = document.getElementById('btn-agregar-carrito');
+                const textoOriginal = boton.innerHTML;
+                boton.innerHTML = '✅ ¡Agregado!';
+                boton.style.background = '#27ae60';
+                boton.disabled = true;
+
+                setTimeout(() => {
+                    boton.innerHTML = textoOriginal;
+                    boton.style.background = '';
+                    boton.disabled = false;
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error al agregar producto al carrito:', error);
+                alert('Error al agregar el producto al carrito: ' + error.message);
+            }
+        }
+
+        // Navegación con teclado
+        document.addEventListener('keydown', function (event) {
+            if (!productoActual || !productoActual.tieneMultiplesImagenes) return;
+
+            if (event.key === 'ArrowLeft') {
+                cambiarImagen('anterior');
+            } else if (event.key === 'ArrowRight') {
+                cambiarImagen('siguiente');
+            }
+        });
+
+        // Cargar el detalle del producto cuando la página esté lista
+        document.addEventListener('DOMContentLoaded', cargarDetalleProducto);
+    </script>
+</body>
+</html>

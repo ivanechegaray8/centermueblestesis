@@ -1,0 +1,981 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centermuebles Tienda Online</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        /* ESTILOS PARA MODALES MÁS COMPACTOS */
+        .modal-content {
+            max-height: 85vh;
+            overflow-y: auto;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+            .modal-content h2 {
+                margin-bottom: 20px;
+                font-size: 1.5em;
+                text-align: center;
+            }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 600;
+                font-size: 0.9em;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                font-size: 0.9em;
+                box-sizing: border-box;
+            }
+
+        .auth-links {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #e74c3c;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.8em;
+            margin-top: 3px;
+            display: none;
+        }
+
+            .error-message.show {
+                display: block;
+            }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Estilos existentes que se mantienen */
+        .search-suggestions {
+            position: absolute;
+            background: white;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-top: none;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 2000;
+        }
+
+        .search-suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+            .search-suggestion-item:hover {
+                background: #f2f2f2;
+            }
+
+        .no-image {
+            width: 100%;
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: bold;
+            border: 1px dashed #ddd;
+            border-radius: 4px;
+        }
+
+        .product-image {
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .product-image img {
+                max-width: 100%;
+                max-height: 200px;
+                object-fit: contain;
+            }
+
+        .producto-destacado-badge {
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            font-size: 1.1em;
+            grid-column: 1 / -1;
+        }
+
+            .empty-state h3 {
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            gap: 8px;
+        }
+
+            .pagination button {
+                padding: 10px 16px;
+                border: 2px solid #2c3e50;
+                background-color: white;
+                color: #2c3e50;
+                cursor: pointer;
+                border-radius: 6px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+
+                .pagination button:hover:not(:disabled) {
+                    background-color: #2c3e50;
+                    color: white;
+                    transform: translateY(-2px);
+                }
+
+                .pagination button.active {
+                    background-color: #2c3e50;
+                    color: white;
+                    border-color: #2c3e50;
+                }
+
+                .pagination button:disabled {
+                    background-color: #f8f9fa;
+                    color: #6c757d;
+                    border-color: #dee2e6;
+                    cursor: not-allowed;
+                    transform: none;
+                }
+
+                .pagination button:focus {
+                    outline: none;
+                    box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
+                }
+
+        .user-menu-item {
+            padding: 8px 14px;
+            background: #a10000;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .user-menu-item:hover {
+                background: #c0392b;
+                transform: translateY(-2px);
+            }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .mensaje {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+
+            .mensaje.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .mensaje.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación superior CON BUSCADOR -->
+    <div class="top-nav">
+        <div class="logo" onclick="cargarPaginaPrincipal()" style="cursor: pointer;">Centermuebles</div>
+
+        <!-- BUSCADOR IMPLEMENTADO -->
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Buscar productos por nombre..." maxlength="100">
+            <div class="search-suggestions" id="search-suggestions"></div>
+        </div>
+
+        <div class="user-actions" id="user-actions">
+            <div class="auth-buttons">
+                <button class="auth-btn secondary" onclick="mostrarLogin()">Ingresar</button>
+                <button class="auth-btn primary" onclick="mostrarRegistro()">Registrarse</button>
+            </div>
+            <a href="carrito.html" class="cart-link">
+                🛒 Carrito
+                <span class="cart-count" id="cart-count" style="display: none;">0</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Menú de categorías COMPLETO CON SUBMENÚS -->
+    <nav class="categories-menu">
+        <ul class="categories-nav">
+            <li><a href="#" onclick="cargarPaginaPrincipal()">INICIO</a></li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('colchonesysommiers')">COLCHONES Y SOMMIERS</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('colchonesysommiers', '1-plaza')">Colchones 1 plaza</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('colchonesysommiers', '2-plazas')">Colchones 2 plazas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('colchonesysommiers', 'sommier')">Sommier</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('electrodomesticos')">ELECTRODOMÉSTICOS</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('electrodomesticos', 'heladeras')">Heladeras / Freezer</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('electrodomesticos', 'lavarropas')">Lavarropas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('electrodomesticos', 'pequenos')">Pequeños y cuidado personal</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('tecnologia')">TECNOLOGÍA</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('tecnologia', 'celulares')">Celulares</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('tecnologia', 'audio')">Audio</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('tecnologia', 'tv')">TV</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('climatizacion')">CLIMATIZACIÓN</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('climatizacion', 'aires')">Aires acondicionados</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('climatizacion', 'estufas')">Estufas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('climatizacion', 'ventiladores')">Ventiladores</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('muebles')">MUEBLES</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'alacenas')">Alacenas y bajomesadas de cocina</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'cajoneras')">Cajoneras</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'aparadores')">Aparadores</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'bibliotecas')">Bibliotecas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'camas-1-plaza')">Camas de 1 plaza</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'camas-2-plazas')">Camas de 2 plazas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'comodas')">Cómodas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'cunas')">Cunas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'despenseros')">Despenseros y Organizadores</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'escritorios')">Escritorios</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'mesas-ratonas')">Mesas ratonas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'mesas-luz')">Mesas de luz</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'muebles-tv')">Muebles para TV</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'placares-corredizas')">Placares Puertas Corredizas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'placares-abrir')">Placares Puertas de Abrir</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'zapateros')">Zapateros</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'vajilleros')">Vajilleros</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'muebles-bano')">Muebles de baño</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('muebles', 'muebles-cocina')">Muebles de cocina</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('airelibre')">AIRE LIBRE</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('airelibre', 'jardin')">Juego de jardín</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('airelibre', 'parrillas')">Parrillas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('airelibre', 'sombrillas')">Sombrillas / Gazebos</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#" onclick="cargarCategoria('cocinasytermotanques')">COCINAS Y TERMOTANQUES</a>
+                <ul class="sub-menu">
+                    <li><a href="#" onclick="cargarSubcategoria('cocinasytermotanques', 'cocinas-gas')">Cocinas a gas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('cocinasytermotanques', 'cocinas-electricas')">Cocinas eléctricas</a></li>
+                    <li><a href="#" onclick="cargarSubcategoria('cocinasytermotanques', 'termotanques')">Termotanques</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- CONTENIDO DINÁMICO -->
+    <main id="contenido-dinamico">
+        <div class="loading">Cargando contenido inicial...</div>
+    </main>
+
+    <!-- MODAL LOGIN COMPACTO -->
+    <div id="modal-login" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal('modal-login')">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email" class="required-field">Email o Usuario:</label>
+                    <input type="text" id="login-email" required placeholder="tu@email.com o usuario" maxlength="100">
+                    <div class="error-message" id="error-login-email"></div>
+                </div>
+                <div class="form-group">
+                    <label for="login-password" class="required-field">Contraseña:</label>
+                    <input type="password" id="login-password" required placeholder="Tu contraseña" maxlength="50">
+                    <div class="error-message" id="error-login-password"></div>
+                </div>
+                <button type="submit" class="btn-primary">Ingresar</button>
+            </form>
+            <div class="auth-links">
+                <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
+            </div>
+            <div id="mensaje-login" class="mensaje"></div>
+        </div>
+    </div>
+
+    <!-- MODAL REGISTRO COMPACTO -->
+    <div id="modal-register" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="cerrarModal('modal-register')">&times;</span>
+            <h2>Crear Cuenta</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-nombreUsuario" class="required-field">Usuario:</label>
+                    <input type="text" id="reg-nombreUsuario" required placeholder="Tu nombre de usuario" maxlength="20">
+                    <div class="error-message" id="error-reg-nombreUsuario"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email" class="required-field">Email:</label>
+                    <input type="email" id="reg-email" required placeholder="tu@email.com" maxlength="100">
+                    <div class="error-message" id="error-reg-email"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password" class="required-field">Contraseña:</label>
+                    <input type="password" id="reg-password" required placeholder="Mínimo 6 caracteres" maxlength="50">
+                    <div class="error-message" id="error-reg-password"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-nombreCompleto" class="required-field">Nombre Completo:</label>
+                    <input type="text" id="reg-nombreCompleto" required placeholder="Tu nombre completo" maxlength="100">
+                    <div class="error-message" id="error-reg-nombreCompleto"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-telefono" class="required-field">Teléfono:</label>
+                    <input type="tel" id="reg-telefono" required placeholder="2954123456 (10 dígitos)" maxlength="15">
+                    <div class="error-message" id="error-reg-telefono"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-direccion" class="required-field">Dirección:</label>
+                    <input type="text" id="reg-direccion" required placeholder="Calle Principal 123" maxlength="200">
+                    <div class="error-message" id="error-reg-direccion"></div>
+                </div>
+                <div class="form-group">
+                    <label for="reg-codigoPostal" class="required-field">Código Postal:</label>
+                    <input type="text" id="reg-codigoPostal" required placeholder="6300 (4 dígitos)" maxlength="10">
+                    <div class="error-message" id="error-reg-codigoPostal"></div>
+                </div>
+                <button type="submit" class="btn-primary">Registrarse</button>
+            </form>
+            <div class="auth-links">
+                <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión aquí</a></p>
+            </div>
+            <div id="mensaje-register" class="mensaje"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Centermuebles</h3>
+                <p>Tu destino para encontrar los mejores productos para el hogar.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contáctanos</h4>
+                <ul class="footer-menu">
+                    <li class="footer-menu-item">
+                        <a href="https://wa.me/542954226036" class="contact-link" target="_blank">
+                            <i class="whatsapp-icon"></i>
+                            +54 2954 226036
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT COMPLETAMENTE CORREGIDO -->
+    <!-- Al final del body -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>  <!-- ¡NUEVO ARCHIVO! -->
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/index.js"></script>
+
+    <script>
+        // CONSTANTES PARA LÍMITES DE CARACTERES
+        const LIMITES = {
+            NOMBRE_USUARIO: {
+                MIN: 3,
+                MAX: 20
+            },
+            EMAIL: {
+                MAX: 100
+            },
+            PASSWORD: {
+                MIN: 6,
+                MAX: 50
+            },
+            NOMBRE_COMPLETO: {
+                MIN: 2,
+                MAX: 100
+            },
+            TELEFONO: {
+                MIN: 7,
+                MAX: 15
+            },
+            DIRECCION: {
+                MIN: 5,
+                MAX: 200
+            },
+            CODIGO_POSTAL: {
+                MIN: 4,
+                MAX: 10
+            }
+        };
+
+        // VALIDACIONES DE FORMULARIOS DE LOGIN
+        function validarFormularioLogin() {
+            let valido = true;
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+
+            if (!emailInput || !passwordInput) {
+                console.error('Elementos del formulario de login no encontrados');
+                return false;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            limpiarMensajesError();
+
+            if (!email) {
+                mostrarError('login-email', 'El email o usuario es requerido');
+                valido = false;
+            } else if (email.length > LIMITES.EMAIL.MAX) {
+                mostrarError('login-email', `El email no puede tener más de ${LIMITES.EMAIL.MAX} caracteres`);
+                valido = false;
+            }
+
+            if (!password) {
+                mostrarError('login-password', 'La contraseña es requerida');
+                valido = false;
+            } else if (password.length > LIMITES.PASSWORD.MAX) {
+                mostrarError('login-password', `La contraseña no puede tener más de ${LIMITES.PASSWORD.MAX} caracteres`);
+                valido = false;
+            }
+
+            return valido;
+        }
+
+        function validarFormularioRegistro() {
+            let valido = true;
+
+            const modalRegister = document.getElementById('modal-register');
+            if (!modalRegister) {
+                mostrarMensajeModal('register', 'Error: Formulario no disponible', 'error');
+                return false;
+            }
+
+            const nombreUsuarioInput = modalRegister.querySelector('#reg-nombreUsuario');
+            const emailInput = modalRegister.querySelector('#reg-email');
+            const passwordInput = modalRegister.querySelector('#reg-password');
+            const nombreCompletoInput = modalRegister.querySelector('#reg-nombreCompleto');
+            const telefonoInput = modalRegister.querySelector('#reg-telefono');
+            const direccionInput = modalRegister.querySelector('#reg-direccion');
+            const codigoPostalInput = modalRegister.querySelector('#reg-codigoPostal');
+
+            if (!nombreUsuarioInput || !emailInput || !passwordInput || !nombreCompletoInput || !telefonoInput || !direccionInput || !codigoPostalInput) {
+                console.error('Elementos del formulario de registro no encontrados');
+                mostrarMensajeModal('register', 'Error: Formulario incompleto', 'error');
+                return false;
+            }
+
+            const nombreUsuario = nombreUsuarioInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const nombreCompleto = nombreCompletoInput.value.trim();
+            const telefono = telefonoInput.value.trim();
+            const direccion = direccionInput.value.trim();
+            const codigoPostal = codigoPostalInput.value.trim();
+
+            limpiarMensajesError();
+
+            // Validación nombre de usuario
+            if (!nombreUsuario) {
+                mostrarError('reg-nombreUsuario', 'El nombre de usuario es requerido');
+                valido = false;
+            } else if (nombreUsuario.length < LIMITES.NOMBRE_USUARIO.MIN) {
+                mostrarError('reg-nombreUsuario', `El nombre de usuario debe tener al menos ${LIMITES.NOMBRE_USUARIO.MIN} caracteres`);
+                valido = false;
+            } else if (nombreUsuario.length > LIMITES.NOMBRE_USUARIO.MAX) {
+                mostrarError('reg-nombreUsuario', `El nombre de usuario no puede tener más de ${LIMITES.NOMBRE_USUARIO.MAX} caracteres`);
+                valido = false;
+            }
+
+            // Validación email
+            if (!email) {
+                mostrarError('reg-email', 'El email es requerido');
+                valido = false;
+            } else if (email.length > LIMITES.EMAIL.MAX) {
+                mostrarError('reg-email', `El email no puede tener más de ${LIMITES.EMAIL.MAX} caracteres`);
+                valido = false;
+            } else if (!validarEmail(email)) {
+                mostrarError('reg-email', 'El formato del email no es válido');
+                valido = false;
+            }
+
+            // Validación contraseña
+            if (!password) {
+                mostrarError('reg-password', 'La contraseña es requerida');
+                valido = false;
+            } else if (password.length < LIMITES.PASSWORD.MIN) {
+                mostrarError('reg-password', `La contraseña debe tener al menos ${LIMITES.PASSWORD.MIN} caracteres`);
+                valido = false;
+            } else if (password.length > LIMITES.PASSWORD.MAX) {
+                mostrarError('reg-password', `La contraseña no puede tener más de ${LIMITES.PASSWORD.MAX} caracteres`);
+                valido = false;
+            }
+
+            // Validación nombre completo
+            const nombreCompletoError = validarNombreCompleto(nombreCompleto);
+            if (nombreCompletoError) {
+                mostrarError('reg-nombreCompleto', nombreCompletoError);
+                valido = false;
+            }
+
+            // Validación teléfono
+            const telefonoError = validarTelefono(telefono);
+            if (telefonoError) {
+                mostrarError('reg-telefono', telefonoError);
+                valido = false;
+            }
+
+            // Validación dirección
+            const direccionError = validarDireccion(direccion);
+            if (direccionError) {
+                mostrarError('reg-direccion', direccionError);
+                valido = false;
+            }
+
+            // Validación código postal
+            const codigoPostalError = validarCodigoPostal(codigoPostal);
+            if (codigoPostalError) {
+                mostrarError('reg-codigoPostal', codigoPostalError);
+                valido = false;
+            }
+
+            return valido;
+        }
+
+        // FUNCIONES DE VALIDACIÓN ACTUALIZADAS
+        function validarEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email) && email.length <= LIMITES.EMAIL.MAX;
+        }
+
+        function validarPassword(password) {
+            return password.length >= LIMITES.PASSWORD.MIN && password.length <= LIMITES.PASSWORD.MAX;
+        }
+
+        function validarNombreCompleto(nombreCompleto) {
+            if (!nombreCompleto) {
+                return 'El nombre completo es requerido';
+            }
+            if (nombreCompleto.length < LIMITES.NOMBRE_COMPLETO.MIN) {
+                return `El nombre completo debe tener al menos ${LIMITES.NOMBRE_COMPLETO.MIN} caracteres`;
+            }
+            if (nombreCompleto.length > LIMITES.NOMBRE_COMPLETO.MAX) {
+                return `El nombre completo no puede tener más de ${LIMITES.NOMBRE_COMPLETO.MAX} caracteres`;
+            }
+            return null;
+        }
+
+        function validarTelefono(telefono) {
+            if (!telefono) {
+                return 'El teléfono es requerido';
+            }
+            if (telefono.length < LIMITES.TELEFONO.MIN) {
+                return `El teléfono debe tener al menos ${LIMITES.TELEFONO.MIN} caracteres`;
+            }
+            if (telefono.length > LIMITES.TELEFONO.MAX) {
+                return `El teléfono no puede tener más de ${LIMITES.TELEFONO.MAX} caracteres`;
+            }
+            const telefonoRegex = /^[0-9+\-\s()]+$/;
+            if (!telefonoRegex.test(telefono)) {
+                return 'El formato del teléfono no es válido';
+            }
+            return null;
+        }
+
+        function validarDireccion(direccion) {
+            if (!direccion) {
+                return 'La dirección es requerida';
+            }
+            if (direccion.length < LIMITES.DIRECCION.MIN) {
+                return `La dirección debe tener al menos ${LIMITES.DIRECCION.MIN} caracteres`;
+            }
+            if (direccion.length > LIMITES.DIRECCION.MAX) {
+                return `La dirección no puede tener más de ${LIMITES.DIRECCION.MAX} caracteres`;
+            }
+            return null;
+        }
+
+        function validarCodigoPostal(codigoPostal) {
+            if (!codigoPostal) {
+                return 'El código postal es requerido';
+            }
+            if (codigoPostal.length < LIMITES.CODIGO_POSTAL.MIN) {
+                return `El código postal debe tener al menos ${LIMITES.CODIGO_POSTAL.MIN} caracteres`;
+            }
+            if (codigoPostal.length > LIMITES.CODIGO_POSTAL.MAX) {
+                return `El código postal no puede tener más de ${LIMITES.CODIGO_POSTAL.MAX} caracteres`;
+            }
+            const codigoPostalRegex = /^[0-9a-zA-Z\-\s]+$/;
+            if (!codigoPostalRegex.test(codigoPostal)) {
+                return 'El formato del código postal no es válido';
+            }
+            return null;
+        }
+
+        // LOGIN Y REGISTRO
+        async function register(userData) {
+            try {
+                console.log('📝 Enviando datos de registro:', {
+                    ...userData,
+                    contraseña: '***'
+                });
+
+                const response = await fetch(`${API_USUARIO}/registro`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        NombreUsuario: userData.nombreUsuario,
+                        Email: userData.email,
+                        Contraseña: userData.contraseña,
+                        NombreCompleto: userData.nombreCompleto,
+                        Telefono: userData.telefono,
+                        Direccion: userData.direccion,
+                        CodigoPostal: userData.codigoPostal
+                    })
+                });
+
+                const data = await response.json();
+                console.log('📨 Respuesta del registro:', data);
+
+                if (response.ok) {
+                    return { success: true, data: data };
+                } else {
+                    return { success: false, message: data.mensaje || 'Error en el registro' };
+                }
+            } catch (error) {
+                console.error('❌ Error en registro:', error);
+                return { success: false, message: 'Error de conexión con el servidor' };
+            }
+        }
+
+        async function login(event) {
+            if (event) event.preventDefault();
+
+            console.log('🔄 Iniciando proceso de login...');
+
+            if (!validarFormularioLogin()) {
+                console.log('❌ Validación de formulario falló');
+                return;
+            }
+
+            const emailInput = document.getElementById('login-email');
+            const passwordInput = document.getElementById('login-password');
+
+            if (!emailInput || !passwordInput) {
+                mostrarMensajeModal('login', 'Error: Campos no encontrados', 'error');
+                return;
+            }
+
+            const credencial = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            // Validar límites antes de enviar
+            if (credencial.length > LIMITES.EMAIL.MAX) {
+                mostrarMensajeModal('login', `El email no puede tener más de ${LIMITES.EMAIL.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (password.length > LIMITES.PASSWORD.MAX) {
+                mostrarMensajeModal('login', `La contraseña no puede tener más de ${LIMITES.PASSWORD.MAX} caracteres`, 'error');
+                return;
+            }
+
+            const formData = {
+                Email: credencial,
+                Contraseña: password
+            };
+
+            try {
+                const boton = document.querySelector('#login-form button[type="submit"]');
+                if (boton) {
+                    boton.innerHTML = '<span class="loading-spinner"></span> Procesando...';
+                    boton.disabled = true;
+                    boton.classList.add('btn-loading');
+                }
+
+                const response = await fetch(`${API_USUARIO}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.token) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+
+                    const esAdmin = esUsuarioAdministrador(data.usuario);
+                    const mensaje = esAdmin
+                        ? '¡Login exitoso! Bienvenido Administrador'
+                        : '¡Login exitoso! Bienvenido/a';
+
+                    mostrarMensajeModal('login', mensaje, 'success');
+                    actualizarInterfazUsuario();
+
+                    setTimeout(() => {
+                        cerrarModal('modal-login');
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    const mensajeError = data.mensaje || 'Error en el login';
+                    mostrarMensajeModal('login', mensajeError, 'error');
+                }
+            } catch (error) {
+                console.error('❌ Error en login:', error);
+                mostrarMensajeModal('login', 'Error de conexión con el servidor', 'error');
+            } finally {
+                const boton = document.querySelector('#login-form button[type="submit"]');
+                if (boton) {
+                    boton.innerHTML = 'Ingresar';
+                    boton.disabled = false;
+                    boton.classList.remove('btn-loading');
+                }
+            }
+        }
+
+        async function registrar(event) {
+            if (event) event.preventDefault();
+
+            console.log('🔄 Iniciando proceso de registro...');
+
+            if (!validarFormularioRegistro()) {
+                console.log('❌ Validación de formulario de registro falló');
+                return;
+            }
+
+            const modalRegister = document.getElementById('modal-register');
+            if (!modalRegister) {
+                mostrarMensajeModal('register', 'Error: Formulario no disponible', 'error');
+                return;
+            }
+
+            const nombreUsuarioInput = document.getElementById('reg-nombreUsuario');
+            const emailInput = document.getElementById('reg-email');
+            const passwordInput = document.getElementById('reg-password');
+            const nombreCompletoInput = document.getElementById('reg-nombreCompleto');
+            const telefonoInput = document.getElementById('reg-telefono');
+            const direccionInput = document.getElementById('reg-direccion');
+            const codigoPostalInput = document.getElementById('reg-codigoPostal');
+
+            if (!nombreUsuarioInput || !emailInput || !passwordInput || !nombreCompletoInput) {
+                mostrarMensajeModal('register', 'Error: Campos del formulario no encontrados', 'error');
+                return;
+            }
+
+            const nombreUsuario = nombreUsuarioInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const nombreCompleto = nombreCompletoInput.value.trim();
+            const telefono = telefonoInput ? telefonoInput.value.trim() : '';
+            const direccion = direccionInput ? direccionInput.value.trim() : '';
+            const codigoPostal = codigoPostalInput ? codigoPostalInput.value.trim() : '';
+
+            // Validaciones adicionales de límites antes de enviar
+            if (nombreUsuario.length > LIMITES.NOMBRE_USUARIO.MAX) {
+                mostrarMensajeModal('register', `El nombre de usuario no puede tener más de ${LIMITES.NOMBRE_USUARIO.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (email.length > LIMITES.EMAIL.MAX) {
+                mostrarMensajeModal('register', `El email no puede tener más de ${LIMITES.EMAIL.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (password.length > LIMITES.PASSWORD.MAX) {
+                mostrarMensajeModal('register', `La contraseña no puede tener más de ${LIMITES.PASSWORD.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (nombreCompleto.length > LIMITES.NOMBRE_COMPLETO.MAX) {
+                mostrarMensajeModal('register', `El nombre completo no puede tener más de ${LIMITES.NOMBRE_COMPLETO.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (telefono.length > LIMITES.TELEFONO.MAX) {
+                mostrarMensajeModal('register', `El teléfono no puede tener más de ${LIMITES.TELEFONO.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (direccion.length > LIMITES.DIRECCION.MAX) {
+                mostrarMensajeModal('register', `La dirección no puede tener más de ${LIMITES.DIRECCION.MAX} caracteres`, 'error');
+                return;
+            }
+
+            if (codigoPostal.length > LIMITES.CODIGO_POSTAL.MAX) {
+                mostrarMensajeModal('register', `El código postal no puede tener más de ${LIMITES.CODIGO_POSTAL.MAX} caracteres`, 'error');
+                return;
+            }
+
+            const formData = {
+                nombreUsuario: nombreUsuario,
+                email: email,
+                contraseña: password,
+                nombreCompleto: nombreCompleto,
+                telefono: telefono,
+                direccion: direccion,
+                codigoPostal: codigoPostal
+            };
+
+            try {
+                const boton = document.querySelector('#register-form button[type="submit"]');
+                if (boton) {
+                    boton.innerHTML = '<span class="loading-spinner"></span> Procesando...';
+                    boton.disabled = true;
+                    boton.classList.add('btn-loading');
+                }
+
+                const result = await register(formData);
+
+                if (result.success) {
+                    mostrarMensajeModal('register', '¡Registro exitoso! Redirigiendo al login...', 'success');
+
+                    setTimeout(() => {
+                        cerrarModal('modal-register');
+                        mostrarLogin();
+                    }, 2000);
+                } else {
+                    mostrarMensajeModal('register', result.message, 'error');
+                }
+            } catch (error) {
+                console.error('❌ Error en registro:', error);
+                mostrarMensajeModal('register', 'Error de conexión con el servidor', 'error');
+            } finally {
+                const boton = document.querySelector('#register-form button[type="submit"]');
+                if (boton) {
+                    boton.innerHTML = 'Registrarse';
+                    boton.disabled = false;
+                    boton.classList.remove('btn-loading');
+                }
+            }
+        }
+
+        // Asignar eventos a los formularios
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+
+            if (loginForm) {
+                loginForm.addEventListener('submit', login);
+            }
+
+            if (registerForm) {
+                registerForm.addEventListener('submit', registrar);
+            }
+        });
+    </script>
+</body>
+</html>

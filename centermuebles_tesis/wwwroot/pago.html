@@ -1,0 +1,1052 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proceso de Pago - Centermuebles</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        .pago-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .pago-nav {
+            background: #34495e;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .pago-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .pago-title {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .btn-volver {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .btn-volver:hover {
+                background: #c0392b;
+            }
+
+        .pago-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+        }
+
+        .pago-error {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            grid-column: 1 / -1;
+        }
+
+        .pago-error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .pago-contenido {
+            display: none;
+        }
+
+        .pago-pasos {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .paso {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+            position: relative;
+        }
+
+            .paso.activo .paso-numero {
+                background: #3498db;
+                color: white;
+            }
+
+            .paso.completado .paso-numero {
+                background: #27ae60;
+                color: white;
+            }
+
+        .paso-numero {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .paso-texto {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .paso.activo .paso-texto {
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .pago-seccion {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .pago-resumen {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .resumen-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .resumen-total {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+            border-top: 2px solid #3498db;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .metodo-pago {
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .metodo-pago:hover {
+                border-color: #3498db;
+                transform: translateY(-2px);
+            }
+
+            .metodo-pago.seleccionado {
+                border-color: #3498db;
+                background: #f8f9fa;
+                box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+            }
+
+        .metodo-pago-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .metodo-pago-icono {
+            font-size: 1.5em;
+        }
+
+        .metodo-pago-titulo {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .metodo-pago-descripcion {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 4px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+            .form-input:focus {
+                outline: none;
+                border-color: #3498db;
+                box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn-pagar {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+            .btn-pagar:hover {
+                background: #219653;
+                transform: translateY(-1px);
+            }
+
+            .btn-pagar:disabled {
+                background: #95a5a6;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Modal de éxito */
+        .modal-exito {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-exito-contenido {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-exito-icono {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .modal-exito-titulo {
+            color: #27ae60;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .modal-exito-mensaje {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-volver-tienda {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 1.1em;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+            .btn-volver-tienda:hover {
+                background: #2980b9;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            }
+
+        /* Estilos para datos de tarjeta */
+        .seccion-tarjeta {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .tarjeta-front {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .tarjeta-chip {
+            width: 50px;
+            height: 40px;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+            .tarjeta-chip::after {
+                content: '';
+                position: absolute;
+                top: 8px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+                border: 1px solid rgba(0,0,0,0.3);
+                border-radius: 4px;
+            }
+
+        .tarjeta-numero {
+            font-family: 'Courier New', monospace;
+            font-size: 1.4em;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .tarjeta-datos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tarjeta-nombre {
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        .tarjeta-vencimiento {
+            font-size: 1em;
+        }
+
+        /* Nuevos estilos para datos bancarios */
+        .datos-bancarios {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+            .datos-bancarios h3 {
+                margin-bottom: 20px;
+                font-size: 1.4em;
+                text-align: center;
+                border-bottom: 2px solid rgba(255,255,255,0.3);
+                padding-bottom: 10px;
+            }
+
+        .info-bancaria {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffd700;
+        }
+
+        .campo-bancario {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+            .campo-bancario:last-child {
+                border-bottom: none;
+            }
+
+            .campo-bancario strong {
+                font-size: 1em;
+                color: #ffd700;
+            }
+
+        .valor-bancario {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            background: rgba(0,0,0,0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: all;
+        }
+
+            .valor-bancario:hover {
+                background: rgba(0,0,0,0.3);
+                transform: scale(1.02);
+            }
+
+        .valor-texto {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        .copiado {
+            background: #27ae60 !important;
+            color: white;
+        }
+
+        .instrucciones-transferencia {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            color: #2c3e50;
+        }
+
+            .instrucciones-transferencia ol {
+                margin-left: 20px;
+            }
+
+            .instrucciones-transferencia li {
+                margin-bottom: 8px;
+                line-height: 1.4;
+            }
+
+        .advertencia {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+
+        /* ESTILOS  PARA SELECCIÓN DE MÉTODOS DE PAGO */
+        .metodo-pago.tarjeta.seleccionado {
+            border-color: #3498db !important;
+            background: linear-gradient(135deg, #ebf5fb, #d6eaf8) !important;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3) !important;
+            transform: translateY(-2px);
+        }
+
+        .metodo-pago.transferencia.seleccionado {
+            border-color: #9b59b6 !important;
+            background: linear-gradient(135deg, #f4ecf7, #e8daef) !important;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3) !important;
+            transform: translateY(-2px);
+        }
+
+        .metodo-pago.efectivo.seleccionado {
+            border-color: #f39c12 !important;
+            background: linear-gradient(135deg, #fef9e7, #fcf3cf) !important;
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Asegurar que los estilos se apliquen con prioridad */
+        .metodo-pago.seleccionado {
+            border-width: 3px !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .pago-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .pago-pasos {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .form-row, .form-row-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .pago-nav-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .modal-exito-contenido {
+                padding: 25px;
+                margin: 20px;
+            }
+
+            .campo-bancario {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .valor-bancario, .valor-texto {
+                width: 100%;
+                text-align: center;
+            }
+
+            .tarjeta-datos {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Mejoras visuales */
+        .btn-primary {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+            .btn-primary:hover {
+                background: #2980b9;
+            }
+
+        .info-contacto {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Estilos para el resumen de confirmación */
+        .resumen-confirmacion-datos {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #3498db;
+        }
+
+        /* Nuevos estilos para adjuntar archivos */
+        .file-upload-container {
+            margin-top: 15px;
+            padding: 15px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .file-upload-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .file-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .file-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 4px solid #28a745;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+
+        .seguridad-info {
+            background: #e8f4fd;
+            border: 1px solid #3498db;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del pago -->
+    <header class="pago-header">
+        <div class="pago-header-content">
+            <h1>💳 Proceso de Pago</h1>
+            <p>Completa tu información para finalizar la compra</p>
+        </div>
+    </header>
+
+    <!-- Navegación del pago -->
+    <nav class="pago-nav">
+        <div class="pago-nav-content">
+            <div class="pago-title">Finalizar Compra</div>
+            <a href="carrito.html" class="btn-volver">← Volver al Carrito</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal del pago -->
+    <main class="pago-main">
+        <div class="pago-container">
+            <!-- Error si no hay datos -->
+            <div id="pago-error" class="pago-error" style="display: none;">
+                <div class="pago-error-icon">❌</div>
+                <h2>No hay datos de pago</h2>
+                <p>Parece que no hay información de compra disponible.</p>
+                <a href="carrito.html" class="btn-primary">Volver al Carrito</a>
+            </div>
+
+            <!-- Contenido del pago -->
+            <div id="pago-contenido" class="pago-contenido">
+                <!-- Pasos del proceso -->
+                <div class="pago-pasos">
+                    <div class="paso activo" id="paso1">
+                        <div class="paso-numero">1</div>
+                        <div class="paso-texto">Método de Pago</div>
+                    </div>
+                    <div class="paso" id="paso2">
+                        <div class="paso-numero">2</div>
+                        <div class="paso-texto">Pago</div>
+                    </div>
+                    <div class="paso" id="paso3">
+                        <div class="paso-numero">3</div>
+                        <div class="paso-texto">Confirmación</div>
+                    </div>
+                </div>
+
+                <!-- Sección 1: Método de Pago -->
+                <div class="pago-seccion" id="seccion-metodo-pago">
+                    <h2>¿Cómo querés pagar?</h2>
+
+                    <div class="info-contacto">
+                        <strong>📞 ¿Tenés dudas?</strong><br>
+                        Llamanos al <strong>2954-123456</strong> o escribinos por WhatsApp
+                    </div>
+
+                    <!-- Método Tarjeta - CORREGIDO -->
+                    <div class="metodo-pago tarjeta seleccionado" onclick="seleccionarMetodoPago('tarjeta', event)">
+                        <div class="metodo-pago-header">
+                            <div class="metodo-pago-icono">💳</div>
+                            <div class="metodo-pago-titulo">Tarjeta de Crédito o Débito</div>
+                        </div>
+                        <div class="metodo-pago-descripcion">
+                            <strong>Aceptamos TODAS las tarjetas:</strong><br>
+                            ✅ Mastercard (Banco de La Pampa, Santander, Galicia, etc.)<br>
+                            ✅ Visa (Banco de La Pampa, BBVA, Macro, etc.)<br>
+                            ✅ American Express<br>
+                            ✅ Hasta 12 cuotas sin interés
+                        </div>
+                    </div>
+
+                    <!-- Método Transferencia - CORREGIDO -->
+                    <div class="metodo-pago transferencia" onclick="seleccionarMetodoPago('transferencia', event)">
+                        <div class="metodo-pago-header">
+                            <div class="metodo-pago-icono">🏦</div>
+                            <div class="metodo-pago-titulo">Transferencia Bancaria</div>
+                        </div>
+                        <div class="metodo-pago-descripcion">
+                            <strong>Transferencia y envío de comprobante</strong><br>
+                            Realizá la transferencia a nuestra cuenta y enviános el comprobante<br>
+                            Datos bancarios disponibles después de confirmar el pedido
+                        </div>
+                    </div>
+
+                    <!-- Método Efectivo - CORREGIDO -->
+                    <div class="metodo-pago efectivo" onclick="seleccionarMetodoPago('efectivo', event)">
+                        <div class="metodo-pago-header">
+                            <div class="metodo-pago-icono">💰</div>
+                            <div class="metodo-pago-titulo">Efectivo</div>
+                        </div>
+                        <div class="metodo-pago-descripcion">
+                            <strong>Pago en efectivo al retirar en el local</strong><br>
+                            Podés abonar en efectivo cuando retirás tu pedido<br>
+                            Dirección: Calle Principal 123, Centro
+                        </div>
+                    </div>
+
+                    <button class="btn-pagar" onclick="siguientePaso()" id="btn-pagar-tarjeta">
+                        Continuar con el Pago
+                    </button>
+                </div>
+
+                <!-- Sección 2: Información de Pago -->
+                <div class="pago-seccion" id="seccion-informacion-personal" style="display: none;">
+                    <h2>Completar Pago</h2>
+
+                    <!-- Sección específica para pago en efectivo -->
+                    <div id="seccion-efectivo-info" style="display: none;">
+                        <div class="info-efectivo">
+                            <h3>💰 Pago en Efectivo</h3>
+                            <div class="instrucciones-efectivo">
+                                <p><strong>Modalidad:</strong> Retiro en el local</p>
+                                <p><strong>Dirección:</strong> Calle Principal 123, Centro, Santa Rosa</p>
+                                <p><strong>Horario de atención:</strong></p>
+                                <ul>
+                                    <li>Lunes a Viernes: 9:00 - 18:00 hs</li>
+                                    <li>Sábados: 9:00 - 13:00 hs</li>
+                                </ul>
+                                <p><strong>📞 Contacto:</strong> 2954-123456</p>
+                                <div class="advertencia">
+                                    <strong>⚠️ IMPORTANTE:</strong> Tenés 7 días para retirar tu pedido. Pasado este plazo,
+                                    el producto volverá a estar disponible para la venta.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección para datos de tarjeta (solo para tarjeta) -->
+                    <div id="seccion-tarjeta" style="display: none;">
+                        <div class="seccion-tarjeta">
+                            <h3>💳 Datos de la Tarjeta</h3>
+
+                            <div class="tarjeta-front">
+                                <div class="tarjeta-chip"></div>
+                                <div class="tarjeta-numero" id="tarjeta-numero-preview">•••• •••• •••• ••••</div>
+                                <div class="tarjeta-datos">
+                                    <div class="tarjeta-nombre" id="tarjeta-nombre-preview">NOMBRE EN TARJETA</div>
+                                    <div class="tarjeta-vencimiento" id="tarjeta-vencimiento-preview">MM/AA</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Número de Tarjeta *</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-input" id="numero-tarjeta" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatearNumeroTarjeta(this)" required>
+                                    <span class="input-icon" id="icono-tarjeta">💳</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nombre en la Tarjeta *</label>
+                                <input type="text" class="form-input" id="nombre-tarjeta" placeholder="JUAN PEREZ" maxlength="40" oninput="actualizarPreviewTarjeta()" required>
+                            </div>
+
+                            <div class="form-row-3">
+                                <div class="form-group">
+                                    <label class="form-label">Mes Vencimiento *</label>
+                                    <select class="form-input" id="mes-vencimiento" onchange="actualizarPreviewTarjeta()" required>
+                                        <option value="">Mes</option>
+                                        <option value="01">01 - Enero</option>
+                                        <option value="02">02 - Febrero</option>
+                                        <option value="03">03 - Marzo</option>
+                                        <option value="04">04 - Abril</option>
+                                        <option value="05">05 - Mayo</option>
+                                        <option value="06">06 - Junio</option>
+                                        <option value="07">07 - Julio</option>
+                                        <option value="08">08 - Agosto</option>
+                                        <option value="09">09 - Septiembre</option>
+                                        <option value="10">10 - Octubre</option>
+                                        <option value="11">11 - Noviembre</option>
+                                        <option value="12">12 - Diciembre</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Año Vencimiento *</label>
+                                    <select class="form-input" id="ano-vencimiento" onchange="actualizarPreviewTarjeta()" required>
+                                        <option value="">Año</option>
+                                        <option value="24">2024</option>
+                                        <option value="25">2025</option>
+                                        <option value="26">2026</option>
+                                        <option value="27">2027</option>
+                                        <option value="28">2028</option>
+                                        <option value="29">2029</option>
+                                        <option value="30">2030</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CVV *</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-input" id="cvv-tarjeta" placeholder="123" maxlength="4" required>
+                                        <span class="input-icon">🔒</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">DNI del Titular *</label>
+                                <input type="text" class="form-input" id="dni-titular" placeholder="12345678" maxlength="15" required>
+                            </div>
+
+                            <div class="seguridad-info">
+                                <strong>🔒 Tus datos están protegidos</strong><br>
+                                Utilizamos encriptación SSL para proteger tu información. No almacenamos los datos de tu tarjeta.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección para datos bancarios (solo para transferencia) -->
+                    <div id="seccion-datos-bancarios" style="display: none;">
+                        <div class="datos-bancarios">
+                            <h3>🏦 Datos para Transferencia Bancaria</h3>
+
+                            <div class="info-bancaria">
+                                <p><strong>Monto a transferir:</strong> <span id="monto-transferencia">$0.00</span></p>
+                                <p><strong>Fecha límite:</strong> 48 horas</p>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>Banco:</strong>
+                                <span class="valor-texto">Banco de La Pampa</span>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>Tipo de Cuenta:</strong>
+                                <span class="valor-texto">Cuenta Corriente</span>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>Titular:</strong>
+                                <span class="valor-texto">CENTRO DE MUEBLES S.A.</span>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>CBU:</strong>
+                                <span class="valor-bancario" onclick="copiarAlPortapapeles(this)">0340216802100123456789</span>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>Alias:</strong>
+                                <span class="valor-bancario" onclick="copiarAlPortapapeles(this)">CENTRO.MUEBLES.SA</span>
+                            </div>
+
+                            <div class="campo-bancario">
+                                <strong>CUIT:</strong>
+                                <span class="valor-texto">30-12345678-9</span>
+                            </div>
+
+                            <div class="instrucciones-transferencia">
+                                <h4>📋 Instrucciones para transferir:</h4>
+                                <ol>
+                                    <li>Ingresá a tu home banking o app del banco</li>
+                                    <li>Seleccioná "Transferencia" o "Pagar"</li>
+                                    <li>Ingresá el CBU o Alias proporcionado</li>
+                                    <li>Verificá que el titular sea "CENTRO DE MUEBLES S.A."</li>
+                                    <li>Ingresá el monto exacto: <strong id="monto-transferencia-texto">$0.00</strong></li>
+                                    <li>Confirmá la transferencia</li>
+                                    <li>Guardá el comprobante</li>
+                                </ol>
+                            </div>
+
+                            <div class="advertencia">
+                                <strong>⚠️ IMPORTANTE:</strong>
+                                Una vez realizada la transferencia, deberás adjuntar el comprobante en la sección inferior.
+                                Tu pedido se procesará una vez verifiquemos el pago.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección para adjuntar comprobante (solo para transferencia) -->
+                    <div id="seccion-comprobante" style="display: none;">
+                        <div class="file-upload-container">
+                            <h3>📎 Adjuntar Comprobante de Transferencia</h3>
+
+                            <label class="file-upload-label">Comprobante de Transferencia *</label>
+                            <input type="file" class="file-input" id="comprobante" accept=".pdf,.jpg,.jpeg,.png" onchange="mostrarInfoArchivo()">
+
+                            <div class="file-info" id="info-archivo">
+                                Formatos aceptados: PDF, JPG, PNG (máx. 5MB)
+                            </div>
+
+                            <div class="advertencia">
+                                <strong>📝 Recordá:</strong>
+                                El comprobante debe mostrar claramente:
+                                <ul>
+                                    <li>Nombre del banco emisor</li>
+                                    <li>Fecha y hora de la transferencia</li>
+                                    <li>Monto transferido</li>
+                                    <li>Número de operación</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn-volver" onclick="anteriorPaso()" style="flex: 1;">
+                            ← Volver
+                        </button>
+                        <button class="btn-pagar" onclick="siguientePaso()" id="btn-confirmar-datos" style="flex: 2;">
+                            Confirmar y Pagar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección 3: Confirmación -->
+                <div class="pago-seccion" id="seccion-confirmacion" style="display: none;">
+                    <h2>Confirma tu Pedido</h2>
+
+                    <div id="resumen-confirmacion">
+                        <!-- Se llena dinámicamente -->
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button class="btn-volver" onclick="anteriorPaso()" style="flex: 1;">
+                            ← Anterior
+                        </button>
+                        <button class="btn-pagar" onclick="procesarPagoFinal()" id="btn-confirmar-pago" style="flex: 2;">
+                            ✅ Confirmar y Pagar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen del pedido -->
+            <div class="pago-resumen" id="resumen-pedido">
+                <h3>Resumen del Pedido</h3>
+                <div id="lista-resumen">
+                    <!-- Se llena dinámicamente -->
+                </div>
+                <div class="resumen-item">
+                    <span>Subtotal:</span>
+                    <span id="resumen-subtotal">$0.00</span>
+                </div>
+                <div class="resumen-item">
+                    <span>Envío:</span>
+                    <span id="resumen-envio">$0.00</span>
+                </div>
+                <div class="resumen-item resumen-total">
+                    <span>Total:</span>
+                    <span id="resumen-total">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de éxito -->
+    <div class="modal-exito" id="modalExito">
+        <div class="modal-exito-contenido">
+            <div class="modal-exito-icono" id="modalIcono">✅</div>
+            <h2 class="modal-exito-titulo" id="modalTitulo">Pago Realizado</h2>
+            <div class="modal-exito-mensaje" id="modalMensaje">
+                <!-- El mensaje se llena dinámicamente -->
+            </div>
+            <a href="index.html" class="btn-volver-tienda">Volver a la Tienda</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/pago.js"></script>
+</body>
+</html>

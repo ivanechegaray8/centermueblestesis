@@ -1,0 +1,349 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Centermuebles</title>
+
+    <!-- CONEXIÓN CON CSS -->
+    <link rel="stylesheet" href="css/estilos.css">
+
+    <style>
+        .carrito-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .carrito-nav {
+            background: #34495e;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .carrito-nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .carrito-title {
+            color: white;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .btn-volver {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+            .btn-volver:hover {
+                background: #c0392b;
+            }
+
+        .carrito-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .carrito-vacio {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .carrito-vacio-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .carrito-vacio h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .carrito-vacio p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .carrito-items {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .carrito-resumen {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        .carrito-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+            .carrito-item:last-child {
+                border-bottom: none;
+            }
+
+        .carrito-item-imagen {
+            width: 100px;
+            height: 100px;
+            background: #f8f8f8;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
+
+            .carrito-item-imagen img {
+                max-width: 90%;
+                max-height: 90%;
+                object-fit: contain;
+            }
+
+        .carrito-item-info {
+            flex: 1;
+        }
+
+        .carrito-item-nombre {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .carrito-item-precio {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .carrito-item-stock {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .carrito-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cantidad-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-cantidad {
+            background: #3498db;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .btn-cantidad:hover {
+                background: #2980b9;
+            }
+
+            .btn-cantidad:disabled {
+                background: #bdc3c7;
+                cursor: not-allowed;
+            }
+
+        .cantidad {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .btn-eliminar-item {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-eliminar-item:hover {
+                background: #c0392b;
+            }
+
+        .stock-alerta {
+            color: #e74c3c;
+            font-size: 0.8em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .resumen-linea {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .resumen-total {
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .btn-comprar {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+            .btn-comprar:hover {
+                background: #219653;
+            }
+
+            .btn-comprar:disabled {
+                background: #95a5a6;
+                cursor: not-allowed;
+            }
+
+        .alerta-stock {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header del carrito -->
+    <header class="carrito-header">
+        <div class="carrito-header-content">
+            <h1>🛒 Carrito de Compras</h1>
+            <p>Revisa y gestiona tus productos</p>
+        </div>
+    </header>
+
+    <!-- Navegación del carrito -->
+    <nav class="carrito-nav">
+        <div class="carrito-nav-content">
+            <div class="carrito-title">Mi Carrito</div>
+            <a href="index.html" class="btn-volver">← Volver a la Tienda</a>
+        </div>
+    </nav>
+
+    <!-- Contenido principal del carrito -->
+    <main class="carrito-main">
+        <div class="carrito-container">
+            <!-- Alerta de stock -->
+            <div id="alerta-stock" class="alerta-stock">
+                ⚠️ Algunos productos tienen stock limitado. Revisa las cantidades antes de comprar.
+            </div>
+
+            <!-- Carrito vacío -->
+            <div id="carrito-vacio" class="carrito-vacio" style="display: none;">
+                <div class="carrito-vacio-icon">🛒</div>
+                <h2>Tu carrito está vacío</h2>
+                <p>Agrega algunos productos increíbles a tu carrito</p>
+                <a href="index.html" class="btn-primary">Seguir Comprando</a>
+            </div>
+
+            <!-- Carrito con items -->
+            <div id="carrito-contenido" style="display: none;">
+                <div class="carrito-items">
+                    <div id="lista-carrito">
+                        <!-- Los items del carrito se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+
+                <div class="carrito-resumen">
+                    <h3>Resumen del Pedido</h3>
+                    <div class="resumen-linea">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="resumen-linea">
+                        <span>Envío:</span>
+                        <span id="envio">$0.00</span>
+                    </div>
+                    <div class="resumen-linea resumen-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                    <button id="btn-comprar" class="btn-comprar" onclick="procesarCompraConfirmada()">
+                        Proceder al Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- CONEXIÓN CON JAVASCRIPT -->
+    <script src="JS/config.js"></script>
+    <script src="JS/utils.js"></script>
+    <script src="JS/auth.js"></script>
+    <script src="JS/validation.js"></script>
+    <script src="JS/modal.js"></script>
+    <script src="JS/login.js"></script>
+    <script src="JS/products.js"></script>
+    <script src="JS/cart.js"></script>
+    <script src="JS/checkout.js"></script>
+    <script src="JS/search.js"></script>
+    <script src="JS/main.js"></script>
+    <script src="JS/carrito.js"></script>
+</body>
+    </html>

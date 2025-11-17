@@ -1,0 +1,558 @@
+🧠 TOP 10 PREGUNTAS MÁS PROBABLES (las que seguro toma)
+1️⃣ ¿Qué es una VPN y para qué sirve?
+
+Una VPN (Virtual Private Network) crea una red privada sobre Internet, cifrando los datos mediante tunneling. Permite conectarse de forma segura a una red remota (teletrabajo, sedes, evitar censura y proteger datos en Wi-Fi público)
+
+2.5-VPNs_1
+
+.
+
+2️⃣ Tipos de VPN
+
+Acceso remoto: usuarios individuales acceden a la red de la empresa.
+
+Punto a punto: conecta sucursales mediante túneles seguros.
+
+Interna: aisla partes de la LAN.
+
+Tunneling: conexión cifrada entre dos máquinas por SSH o similar
+
+2.5-VPNs_1
+
+.
+
+3️⃣ Protocolos VPN más usados
+
+IPSec: estándar más seguro; usa ESP, AH e IKE.
+
+OpenVPN: usa SSL/TLS, seguro y flexible.
+
+WireGuard: moderno, rápido y simple.
+
+PPTP: obsoleto e inseguro
+
+2.5-VPNs_1
+
+.
+
+4️⃣ ¿Qué es un Firewall y para qué sirve?
+
+Un cortafuegos controla el tráfico entre redes, bloqueando accesos no autorizados y permitiendo los legítimos. Puede ser hardware o software
+
+3-Firewall__Proxy
+
+.
+
+5️⃣ Generaciones de Firewalls
+
+Filtrado de paquetes (1ª gen): inspecciona IP, puerto y protocolo.
+
+De estado (2ª gen): analiza conexiones activas.
+
+De aplicación (3ª gen): analiza protocolos como HTTP, FTP, DNS (capa 7 OSI)
+
+3-Firewall__Proxy
+
+.
+
+6️⃣ ¿Qué es un Proxy?
+
+Servidor intermediario entre cliente y servidor.
+Funciones: control, caché, filtrado, anonimato y ahorro de ancho de banda
+
+3-Firewall__Proxy
+
+.
+
+7️⃣ Tipos de Proxy
+
+Directo / Caché (Squid): acelera acceso y filtra contenido.
+
+Transparente: el usuario no lo configura.
+
+Inverso: protege servidores web, distribuye carga, SSL.
+
+NAT (enmascaramiento): traduce IPs privadas a públicas
+
+3-Firewall__Proxy
+
+.
+
+8️⃣ ¿Qué es Docker?
+
+Sistema de contenedores que aísla aplicaciones y sus dependencias, usando menos recursos que una máquina virtual.
+Ejemplo: un WordPress completo cabe en 100 MB (vs. 5-20 GB de una VM)
+
+Docker_1
+
+.
+
+9️⃣ Diferencia Docker vs Máquina Virtual
+
+Docker comparte el kernel del SO → más liviano y rápido.
+
+Una VM emula todo un sistema operativo completo.
+
+Docker no corre cualquier SO dentro de otro (Linux→Linux sí, pero no Linux→Windows sin compatibilidad)
+
+Docker_1
+
+.
+
+🔟 Expresiones Regulares — Concepto
+
+Permiten buscar, validar o reemplazar texto mediante patrones. Son esenciales en Unix/Linux para manipular texto
+
+6-Expresiones_regulares
+
+.
+
+⚙️ SIGUIENTES 5 PREGUNTAS (muy probables)
+11️⃣ Operadores básicos de regex
+
+[] conjunto, . cualquier caracter, * 0 o más, + 1 o más, ? opcional, | alternativo (OR), ^ inicio, $ fin
+
+6-Expresiones_regulares
+
+.
+
+12️⃣ Agrupación y referencias
+
+() agrupa y guarda resultados → se accede con \1, \2, etc.
+Ej: /([0-9])\1/ busca números repetidos como “33”
+
+6-Expresiones_regulares
+
+.
+
+13️⃣ Cuantificadores
+
+{m,n} repite patrón mínimo m y máximo n veces.
+Ej: /go{1,4}l/ coincide con “gool” o “gooool”
+
+6-Expresiones_regulares
+
+.
+
+14️⃣ Firewall — limitaciones
+
+No protege de:
+
+Ataques internos
+
+Ingeniería social
+
+Virus dentro de tráfico permitido
+
+Fallos de seguridad en servicios autorizados
+
+3-Firewall__Proxy
+
+.
+
+15️⃣ Squid Proxy — funciones clave
+
+Proxy/cache (HTTP, HTTPS, FTP).
+
+Control de acceso (ACL).
+
+Bloqueo de sitios (blacklist).
+
+Proxy transparente.
+
+Caché DNS y SNMP
+
+3-Firewall__Proxy
+
+.
+
+📚 5 PREGUNTAS EXTRA (por si amplía)
+16️⃣ WireGuard — características
+
+Cifrado moderno (ChaCha20), código pequeño, rápido, y fácil de configurar. Usa túneles P2P cifrados
+
+2.5-VPNs_1
+
+.
+
+17️⃣ IPsec — componentes
+
+ESP: cifra y autentica.
+
+AH: autentica sin cifrar.
+
+IKE: gestiona claves y asociaciones de seguridad
+
+2.5-VPNs_1
+
+.
+
+18️⃣ Expresiones regulares — abreviaturas útiles
+
+\w alfanumérico, \d dígito, \s espacio; mayúsculas son lo opuesto (\W, \D, \S)
+
+6-Expresiones_regulares
+
+.
+
+19️⃣ Docker — cuándo no usarlo
+
+Apps con interfaz gráfica acoplada (Photoshop).
+
+SO distintos sin compatibilidad.
+
+No es ideal para escalar por sí solo (para eso se usa Kubernetes)
+
+Docker_1
+
+.
+
+20️⃣ Ventajas de las VPN
+
+Seguridad (cifrado extremo a extremo).
+
+Integridad y confidencialidad.
+
+Teletrabajo y acceso remoto.
+
+Reducción de costos
+
+2.5-VPNs_1
+
+🧩 PREGUNTAS ADICIONALES (21–35)
+21️⃣ ¿Qué significa el término “tunneling” en una VPN?
+
+Es la técnica de crear un “túnel cifrado” dentro de una red insegura (Internet) para que los datos viajen protegidos
+
+2.5-VPNs_1
+
+.
+
+22️⃣ ¿Qué tres requisitos básicos debe cumplir una VPN segura?
+
+Identificación de usuario
+
+Cifrado de datos
+
+Gestión de claves de cifrado
+
+2.5-VPNs_1
+
+.
+
+23️⃣ ¿Qué diferencia hay entre cifrado simétrico y asimétrico?
+
+Simétrico: misma clave para cifrar/descifrar (ej: DES, 3DES, IDEA).
+
+Asimétrico: usa par de claves (pública y privada), como RSA
+
+2.5-VPNs_1
+
+.
+
+24️⃣ ¿Qué protocolo usa OpenVPN para autenticación?
+
+Usa SSL/TLS para autenticar y establecer túneles seguros
+
+2.5-VPNs_1
+
+.
+
+25️⃣ ¿Qué diferencia hay entre modo transporte y modo túnel en IPsec?
+
+Transporte: cifra solo los datos del paquete IP.
+
+Túnel: cifra todo el paquete (datos + cabecera original)
+
+2.5-VPNs_1
+
+.
+
+26️⃣ ¿Qué es el algoritmo Diffie-Hellman y para qué sirve?
+
+Permite intercambiar claves simétricas de forma segura a través de canales inseguros; base de los sistemas asimétricos
+
+2.5-VPNs_1
+
+.
+
+27️⃣ ¿Qué es un proxy inverso y qué ventajas tiene?
+
+Proxy que se coloca frente a servidores web para protegerlos, distribuir carga, manejar SSL y almacenar contenido estático
+
+3-Firewall__Proxy
+
+.
+
+28️⃣ ¿Qué diferencia hay entre un proxy transparente y uno normal?
+
+El transparente no necesita configuración en el cliente; intercepta conexiones automáticamente
+
+3-Firewall__Proxy
+
+.
+
+29️⃣ ¿Qué hace la técnica NAT (Network Address Translation)?
+
+Traduce direcciones IP privadas a una IP pública, permitiendo que varios equipos compartan una misma conexión a Internet
+
+3-Firewall__Proxy
+
+.
+
+30️⃣ ¿Qué archivo se edita para configurar Squid en Ubuntu?
+
+/etc/squid/squid.conf
+
+3-Firewall__Proxy
+
+.
+
+31️⃣ ¿Qué comando se usa para comprobar que Squid funciona correctamente?
+
+sudo systemctl status squid
+
+3-Firewall__Proxy
+
+.
+
+32️⃣ ¿Qué significan las siglas ACL en Squid?
+
+Access Control List, o lista de control de acceso. Define reglas para permitir o denegar tráfico
+
+3-Firewall__Proxy
+
+.
+
+33️⃣ ¿Qué es la zona desmilitarizada (DMZ) en un firewall?
+
+Es una red intermedia donde se colocan servidores accesibles desde Internet sin exponer la red interna
+
+3-Firewall__Proxy
+
+.
+
+34️⃣ ¿Qué ventajas tiene usar Docker?
+
+Portabilidad (mover contenedores fácilmente).
+
+Rapidez y bajo consumo.
+
+Versionado y replicación sencilla
+
+Docker_1
+
+.
+
+35️⃣ ¿Qué comando verifica la instalación de Docker?
+
+sudo docker run hello-world
+
+Docker_1
+
+.
+
+🧠 BONUS: DETALLES AVANZADOS (si tu profe es técnico)
+36️⃣ ¿Por qué PPTP ya no se recomienda?
+
+Por tener cifrado débil (MPPE) y múltiples vulnerabilidades conocidas
+
+2.5-VPNs_1
+
+.
+
+37️⃣ ¿Qué ventajas tiene WireGuard sobre IPsec o OpenVPN?
+
+Más rápido, simple de configurar, código más corto, y usa criptografía moderna (ChaCha20, Poly1305)
+
+2.5-VPNs_1
+
+.
+
+38️⃣ ¿Qué es el “Hole Punching” en redes?
+
+Técnica para permitir conexiones directas (P2P) entre dos dispositivos detrás de NAT/firewall
+
+2.5-VPNs_1
+
+.
+
+39️⃣ ¿Qué es una expresión regular “global”?
+
+Cuando usa el modificador /g, reemplaza o busca todas las ocurrencias, no solo la primera
+
+6-Expresiones_regulares
+
+.
+
+40️⃣ ¿Qué diferencia hay entre los operadores * y + en regex?
+
+* = 0 o más repeticiones
+
++ = 1 o más repeticiones
+
+6-Expresiones_regulares
+
+.
+
+41️⃣ ¿Qué significa ^ y $ en expresiones regulares?
+
+^ inicio de línea
+
+$ fin de línea
+
+6-Expresiones_regulares
+
+.
+
+42️⃣ ¿Qué significa | en regex?
+
+Alternativa lógica (OR). Ejemplo: (perro|gato) encuentra cualquiera de los dos
+
+6-Expresiones_regulares
+
+.
+
+43️⃣ ¿Qué significa \b y \B en regex?
+
+\b: límite de palabra
+
+\B: no límite de palabra
+
+6-Expresiones_regulares
+
+.
+
+44️⃣ ¿Qué hace el comando sed 's/^/Texto:/g' archivo?
+
+Agrega el texto “Texto:” al comienzo de cada línea
+
+6-Expresiones_regulares
+
+.
+
+45️⃣ ¿Qué hace docker-ce?
+
+Es el motor principal de Docker Engine, junto con docker-ce-cli y containerd.io
+
+
+
+
+
+
+
+
+
+
+
+
+🎯 LAS 10 PREGUNTAS “OBLIGADAS” (según los PDFs)
+🧩 1️⃣ ¿Qué es una VPN?
+
+➡️ Es una Red Privada Virtual (Virtual Private Network) que crea un túnel cifrado dentro de Internet para conectar redes o equipos remotos de forma segura, como si estuvieran en una misma LAN
+
+2.5-VPNs_1
+
+.
+
+🧩 2️⃣ Tipos de VPN
+
+➡️ Acceso remoto, punto a punto, interna y tunneling (SSH).
+Sirven para conectar usuarios, sedes o aislar zonas de red
+
+2.5-VPNs_1
+
+.
+
+🧩 3️⃣ ¿Qué es un Firewall y para qué sirve?
+
+➡️ Es un sistema que filtra el tráfico de red, bloqueando accesos no autorizados y permitiendo los legítimos.
+Puede ser de hardware o software
+
+3-Firewall__Proxy
+
+.
+
+🧩 4️⃣ Generaciones de Firewalls
+
+➡️ 1ª: Filtrado de paquetes
+➡️ 2ª: De estado (mantiene conexiones activas)
+➡️ 3ª: De aplicación (capa 7 OSI, analiza HTTP, DNS, etc.)
+
+3-Firewall__Proxy
+
+.
+
+🧩 5️⃣ ¿Qué es un Proxy y para qué sirve?
+
+➡️ Es un intermediario entre el cliente y el servidor.
+Funciones: control, caché, filtrado, anonimato y ahorro de ancho de banda
+
+3-Firewall__Proxy
+
+.
+
+🧩 6️⃣ Tipos de Proxy
+
+➡️ Transparente, inverso, caché (Squid) y NAT.
+El transparente no necesita configuración en el cliente;
+el inverso protege servidores y distribuye carga
+
+3-Firewall__Proxy
+
+.
+
+🧩 7️⃣ ¿Qué es Docker?
+
+➡️ Es una tecnología de contenedores que permite ejecutar aplicaciones y servicios de forma aislada, con menor consumo de recursos que una máquina virtual
+
+Docker_1
+
+.
+
+🧩 8️⃣ Diferencia entre Docker y Máquina Virtual
+
+➡️ Docker comparte el kernel del SO → liviano y rápido.
+➡️ VM emula un SO completo → más pesado (5–20 GB).
+Docker no puede ejecutar cualquier SO dentro de otro (solo compatibles)
+
+Docker_1
+
+.
+
+🧩 9️⃣ ¿Qué son las Expresiones Regulares?
+
+➡️ Son patrones para buscar, validar o reemplazar texto.
+En Linux/Unix son esenciales para scripts, análisis y reemplazos masivos
+
+6-Expresiones_regulares
+
+.
+
+🧩 🔟 Operadores básicos de regex
+
+➡️ . cualquier caracter
+➡️ * 0 o más repeticiones
+➡️ + 1 o más
+➡️ ? opcional
+➡️ | alternancia (OR)
+➡️ ^ inicio / $ fin de línea
+
+6-Expresiones_regulares
+
+.
+
+💡 CONSEJO FINAL
+Si el examen es de desarrollo:
+
+Mencioná VPN = cifrado + túnel + conexión segura
+
+Firewall = filtro entre redes
+
+Proxy = intermediario y caché
+
+Docker = contenedor liviano vs VM
+
+Regex = búsqueda avanzada de texto
+
+Con eso y dos ejemplos (uno de regex y uno de Docker o Proxy), estás blindado.

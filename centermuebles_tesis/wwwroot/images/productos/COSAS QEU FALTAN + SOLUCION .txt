@@ -1,0 +1,72 @@
+- EN EL PANEL DE VENTAS VER LOS EMAILS DE USUARIOS QUE COMPREN PRODUCTOS
+
+- AGREGAR LAS CATEGORIAS EN EL FOOTER 
+
+- AGREGAR IMAGENES A TODOS LOS PRODCUTOS
+
+- A LA HORA DE SELECCIONAR EL METODO DE PAGO QUE SE VEA LA OPCION MARCADA
+
+- AGREGAR ICONO DE WHATSAPP ABAJO A LA DERCHA PARA EL USUARIO 
+
+- CENTRAR Y PONER ESTILOS A LA PAGINACION DE LOS PRODUCTOS DEL INDEX.HTML
+
+- CENTRAR EL MENSAJE A LA HORA DE FILTRAR LOS PRODUCTOS EN EL INDEX.HTML
+
+- ESTILOS AL CERRAR SESION POR PARTE DEL USUARIO
+
+
+
+CODIGO PARA LO DE WHATSAPP Y LO DE LOS MEDIOS DE PAGO EN EL FOOTER: (<span class="d-block d-md-inline-block align-middle mb-3 mb-md-1 mr-md-2">Medios de pago</span>) Y ESTE (<span class="d-inline-block align-middle">
+												
+
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/visa@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/visa@2x.png" class="icon-logo lazyloaded" alt="visa" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/mastercard@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/mastercard@2x.png" class="icon-logo lazyloaded" alt="mastercard" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/amex@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/amex@2x.png" class="icon-logo lazyloaded" alt="amex" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/banelco@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/banelco@2x.png" class="icon-logo lazyloaded" alt="ar_banelco" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cabal@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cabal@2x.png" class="icon-logo lazyloaded" alt="ar_cabal" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/link@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/link@2x.png" class="icon-logo lazyloaded" alt="ar_link" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/tarjeta-naranja@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/tarjeta-naranja@2x.png" class="icon-logo lazyloaded" alt="ar_tarjeta-naranja" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/cash@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/cash@2x.png" class="icon-logo lazyloaded" alt="cash" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/custom@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/custom@2x.png" class="icon-logo lazyloaded" alt="custom" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/other@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/other@2x.png" class="icon-logo lazyloaded" alt="other" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/nativa@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/nativa@2x.png" class="icon-logo lazyloaded" alt="nativa" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cencosud@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cencosud@2x.png" class="icon-logo lazyloaded" alt="ar_cencosud" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/argencard@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/argencard@2x.png" class="icon-logo lazyloaded" alt="ar_argencard" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cabaldebit@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/cabaldebit@2x.png" class="icon-logo lazyloaded" alt="ar_cabaldebit" width="40" height="25">
+
+				
+	<img src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/provincianet@2x.png" data-src="//d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/new_logos_payment/ar/provincianet@2x.png" class="icon-logo lazyloaded" alt="ar_provincianet" width="40" height="25">
+
+								</span>)
+ ICONO DE WHATSAAP
+(<svg class="icon-inline"><use xlink:href="#whatsapp"></use></svg>) O ESTE O AMBOS NOSE(<a href="https://wa.me/542954872374" target="_blank" class="js-btn-fixed-bottom btn-whatsapp" aria-label="Comunicate por WhatsApp">
+        <svg class="icon-inline"><use xlink:href="#whatsapp"></use></svg>
+    </a>)
